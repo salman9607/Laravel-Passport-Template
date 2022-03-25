@@ -12,10 +12,6 @@ class AuthController extends BaseController
     /**
      * Registration Req
      */
-    public function index()
-	{
-echo "string";
-	}
     public function register(Request $request)
     {
 		$validator = Validator::make($request->all(), [
