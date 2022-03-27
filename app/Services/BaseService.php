@@ -1,93 +1,53 @@
 <?php 
 namespace App\Services;
 
-use App\Repositories\Eloquent\BaseRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Arr;
 
 class BaseService
 {
-    protected $repository;
+    protected Model $model;
 
-    /**
-     * @param BaseRepository|null $repository
-     */
-    public function __construct(BaseRepository $repository = null)
+    public function __construct(Model $model)
     {
-        $this->repository = $repository;
+        $this->model = $model;
     }
 
-    /**
-     * @param array $columns
-     * @param array $relations
-     * @return Collection
-     */
     public function all(array $columns = ['*'], array $relations = []): Collection
     {
-        return $this->repository->all($columns, $relations);
+        return $this->model->with($relations)->get($columns);
     }
 
-    /**
-     * Create a model.
-     *
-     * @param array $payload
-     * @return Model|null
-     */
     public function create(array $payload): ?Model
     {
-        return $this->repository->create($payload);
+        return $this->model->create(Arr::only($payload, $this->model->fillable));
     }
 
-    /**
-     * Update existing model.
-     *
-     * @param array $payload
-     * @param Model $model
-     * @return Model|null
-     */
     public function update(array $payload, Model $model): ?Model
     {
-        return $this->repository->update($payload, $model);
+        $model->update(Arr::only($payload, $model->fillable));
+        return $model;
+
     }
 
-    /**
-     * Delete existing model.
-     *
-     * @param Model $model
-     * @return bool
-     */
     public function delete(Model $model): bool
     {
-        return $this->repository->deleteById($model);
+        return $model->delete();
     }
 
-    /**
-     * @param int $id
-     * @return Model|null
-     */
-    public function findById(int $id): ?Model
+    public function findById(int $modelId, array $columns = ['*'], array $relations = []): ?Model
     {
-        return $this->repository->findById($id);
+        return $this->model->select($columns)->with($relations)->findOrFail($modelId);
     }
 
-    /**
-     * @param int $perPage
-     * @param array $columns
-     * @return mixed
-     */
-    public function paginate(int $perPage = 15, array $columns = ["*"])
-    {
-        return $this->repository->paginate($perPage, $columns);
-    }
+    // public function paginate(int $perPage = 15, array $columns = ["*"])
+    // {
+    //     return $this->repository->paginate($perPage, $columns);
+    // }
 
-    /**
-     * Permanently delete model by id.
-     *
-     * @param int $modelId
-     * @return bool
-     */
-    public function permanentlyDeleteById(int $modelId): bool
-    {
-        return $this->repository->permanentlyDeleteById($modelId);
-    }
+    // public function permanentlyDeleteById(int $modelId): bool
+    // {
+    //     return $this->findTrashedById($modelId)->forceDelete();
+    // }
 }

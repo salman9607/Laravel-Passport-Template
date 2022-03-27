@@ -23,11 +23,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login'])->name('login');
-
  
 Route::middleware('auth:api')->group(function () {
-
     Route::get('get-user', [AuthController::class, 'userInfo']);
 	Route::resource('posts', PostController::class);
-    // Route::get('get-post', [PostController::class, 'index']);
 });

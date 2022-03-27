@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller as Controller;
 
 use App\Services\ApiResponder;
 // use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 
 class BaseController extends Controller
