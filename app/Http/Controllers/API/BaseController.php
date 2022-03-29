@@ -69,42 +69,6 @@ class BaseController extends Controller
         return $this;
     }
 
-    public function addMeta($metaKey, $metaValue): self
-    {
-        $this->responder->addMeta($metaKey, $metaValue);
-
-        return $this;
-    }
-
-    public function withPaginator(LengthAwarePaginator $paginator, $transformer = null): Response
-    {
-        $statusCode = $this->statusCode ?: Response::HTTP_OK;
-        return $this->responder->respondWithPaginator($paginator, $transformer ?: $this->transformer, $statusCode);
-    }
-
-    public function withItem($item, $transformer = null): Response
-    {
-        $statusCode = $this->statusCode ?: ResponseAlias::HTTP_OK;
-        return $this->responder->respondWithItem($item, $transformer ?: $this->transformer, $statusCode);
-    }
-
-    public function respondWithEmpty(): Response
-    {
-        return $this->responder->respondWithEmpty();
-    }
-
-    public function withCollection($collection, $transformer = null): Response
-    {
-        $statusCode = $this->statusCode ?: Response::HTTP_OK;
-        return $this->responder->respondWithCollection($collection, $transformer ?: $this->transformer, $statusCode);
-    }
-
-    public function withArray(array $data): JsonResponse
-    {
-        $statusCode = $this->statusCode ?: Response::HTTP_OK;
-        return $this->responder->respondWithArray($data, $statusCode);
-    }
-
     protected function getQueryBuilderParams($per_page = 10): array
     {
         return [
