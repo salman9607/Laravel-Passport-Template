@@ -7,7 +7,6 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller as Controller;
 
-use App\Services\ApiResponder;
 // use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
@@ -25,7 +24,6 @@ class BaseController extends Controller
     public function __construct()
     {
         $this->request = app('request');
-        $this->responder = new ApiResponder();
     }
 
     public function sendResponse($result, $message)
